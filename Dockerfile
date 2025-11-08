@@ -1,38 +1,24 @@
-FROM python:3.12-slim-bookworm AS base
-
-
-FROM base AS dependencies
-
-
-RUN apt-get update && \
-    apt-get install -y build-essential curl && \
-    rm -rf /var/lib/apt/lists/*
-
-
-ENV POETRY_NO_INTERACTION=1
-ENV POETRY_VERSION=2.2.1
-
-
-# System deps:
-RUN curl -sSL https://install.python-poetry.org | python3 -
-ENV PATH="/root/.local/bin:$PATH"
-
+## ------------------------------- Builder Stage ------------------------------ ##
+FROM python:3.12-slim-bookworm AS builder
 
 WORKDIR /app
 
-COPY pyproject.toml poetry.toml poetry.lock ./
-RUN poetry sync --without=dev --no-root --no-interaction --no-ansi
+RUN pip install poetry==2.2.1
+
+COPY pyproject.toml poetry.lock poetry.toml ./
+
+RUN poetry sync --no-root --without dev
 
 
-FROM base AS runtime
+## ------------------------------- Final Stage ------------------------------ ##
+FROM python:3.12-slim-bookworm AS production
 
 WORKDIR /app
 
-COPY --from=dependencies /app/.venv ./
-
+COPY --from=builder /app/.venv .venv
 COPY . .
 
-ENV PYTHONUNBUFFERED=1
-ENV VIRTUAL_ENV=/app/.venv
+# Set up environment variables for production
+ENV PATH="/app/.venv/bin:$PATH"
 
 ENTRYPOINT ["python", "-m", "storage_service"]
