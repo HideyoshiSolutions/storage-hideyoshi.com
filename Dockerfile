@@ -14,6 +14,7 @@ RUN poetry sync --no-root --without dev
 FROM python:3.12-slim-bookworm AS production
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
     build-essential \
     python3-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
