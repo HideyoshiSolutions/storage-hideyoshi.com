@@ -1,0 +1,27 @@
+# Project files
+README.md
+
+
+# Build and CI files
+.k8s/
+
+
+# Git files
+.github/
+.githooks/
+.gitignore
+
+
+# Test files
+tests/
+
+
+# IDE files
+.vscode/
+.idea/
+
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
