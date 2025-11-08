@@ -23,12 +23,9 @@ from functools import cache
 def dependency_virus_checker_service() -> VirusCheckerService:
     load_dotenv()
 
-    try:
-        type = VirusCheckerType(os.environ["VIRUS_CHECKER_TYPE"])
-    except ValueError:
-        raise RuntimeError("Invalid Virus Checker Type")
+    checker_type = VirusCheckerType(os.environ.get("VIRUS_CHECKER_TYPE", "total_virus"))
 
-    match type:
+    match checker_type:
         case VirusCheckerType.TOTAL_VIRUS:
             virus_checker = Virustotal(get_virus_checker_api_key())
             return VirusTotalService(virus_checker)
