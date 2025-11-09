@@ -1,5 +1,3 @@
-from storage_service.utils.enums.storage_type import StorageType
-
 from dotenv import load_dotenv
 
 import os
@@ -14,5 +12,5 @@ def get_config_s3():
         "aws_secret_access_key": os.environ.get("AWS_SECRET_ACCESS_KEY", None),
         "region_name": os.environ.get("AWS_REGION_NAME", None),
         "bucket_name": os.environ.get("AWS_BUCKET_NAME", None),
-        "expires_in": os.environ.get("EXPIRES_IN", 3600),
+        "expires_in": os.environ.get("EXPIRES_IN", "3600"),
     }

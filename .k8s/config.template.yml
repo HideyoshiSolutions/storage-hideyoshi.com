@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: storage-config
+    namespace: ${KUBE_NAMESPACE}
+data:
+  SERVER_PORT: "8000"
+
+  REDIS_HOST: "storage-redis-service"
+  REDIS_PORT: "6379"
+
+  EXPIRES_IN: "1800000"

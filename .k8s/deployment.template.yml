@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: storage-deployment
+    namespace: ${KUBE_NAMESPACE}
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: storage
+    template:
+        metadata:
+            labels:
+                app: storage
+        spec:
+            nodeSelector:
+                ${WORKER_NODE_LABEL}
+            imagePullSecrets:
+                - name: ghcr-secret
+            containers:
+                - name: storage
+                  image: ${IMAGE_BASE}:${IMAGE_TAG}
+                  imagePullPolicy: Always
+                  resources:
+                      requests:
+                          memory: "256Mi"
+                          cpu: "250m"
+                      limits:
+                          memory: "256Mi"
+                          cpu: "1000m"
+                  ports:
+                      - containerPort: 8000
+                  readinessProbe:
+                      httpGet:
+                          path: /health
+                          port: 8000
+                      initialDelaySeconds: 60
+                  livenessProbe:
+                      httpGet:
+                          path: /health
+                          port: 8000
+                      initialDelaySeconds: 60
+                  envFrom:
+                      - configMapRef:
+                          name: storage-config
+                      - secretRef:
+                          name: storage-secret
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+    namespace: ${KUBE_NAMESPACE}
+    name: storage-service
+spec:
+    selector:
+        app: backend
+    ports:
+        -   port: 8000
+            protocol: TCP
+            targetPort: 8000
+    type: ClusterIP

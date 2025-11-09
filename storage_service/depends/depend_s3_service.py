@@ -37,12 +37,15 @@ def build_client_s3(config: dict) -> botocore.client.BaseClient:
 def dependency_storage_service() -> StorageService:
     load_dotenv()
 
-    if StorageType(os.environ["STORAGE_TYPE"]) == StorageType.S3_STORAGE:
-        s3_config = get_config_s3()
+    storage_type = StorageType(os.environ.get("STORAGE_TYPE", "s3"))
 
-        return AmazonS3Service(
-            build_client_s3(s3_config),
-            s3_config["bucket_name"],
-        )
+    match storage_type:
+        case StorageType.S3_STORAGE:
+            s3_config = get_config_s3()
 
-    raise RuntimeError("Invalid Storage Type")
+            return AmazonS3Service(
+                build_client_s3(s3_config),
+                s3_config["bucket_name"],
+            )
+        case _:
+            raise RuntimeError("Invalid Storage Type")

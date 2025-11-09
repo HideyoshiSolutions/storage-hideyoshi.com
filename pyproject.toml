@@ -3,7 +3,6 @@ name = "resize-image-service"
 version = "0.1.0"
 description = ""
 authors = ["Vitor Hideyoshi <vitor.h.n.batista@gmail.com>"]
-readme = "README.md"
 packages = [{include = "storage_service"}]
 
 [tool.poetry.dependencies]
@@ -18,9 +17,7 @@ uvicorn = "^0.29.0"
 boto3 = "^1.34.109"
 python-multipart = "^0.0.9"
 virustotal-python = "^1.0.2"
-fastapi-utils = "^0.6.0"
-typing-inspect = "^0.9.0"
-poethepoet = "^0.26.1"
+fastapi-utils = {extras = ["all"], version = "^0.8.0"}
 
 
 [tool.poetry.group.dev.dependencies]
@@ -28,6 +25,7 @@ isort = "^5.12.0"
 black = "^23.7.0"
 coverage = "^7.5.1"
 pre-commit = "^3.7.1"
+poethepoet = "^0.37.0"
 
 
 
