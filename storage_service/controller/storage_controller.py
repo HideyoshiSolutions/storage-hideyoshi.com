@@ -16,7 +16,7 @@ from storage_service.utils.exceptions.file_not_found_exception import (
 from storage_service.utils.file.file_hash_generator import generate_file_hash
 from storage_service.worker.storage_file_worker import storage_file_worker
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 from fastapi_utils.cbv import cbv
 from rq import Queue
 
