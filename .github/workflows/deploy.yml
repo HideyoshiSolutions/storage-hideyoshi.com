@@ -102,10 +102,7 @@ jobs:
     env:
       # Kubernetes Specific
       KUBE_NAMESPACE: ${{ vars.KUBE_NAMESPACE }}
-      KUBE_API_DOMAIN: ${{ vars.KUBE_API_DOMAIN }}
       WORKER_NODE_LABEL: ${{ vars.WORKER_NODE_LABEL }}
-      # Application Specific
-      FRONTEND_PATH: ${{ vars.FRONTEND_PATH }}
 
     steps:
       - uses: actions/checkout@v4
